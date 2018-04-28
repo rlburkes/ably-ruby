@@ -650,7 +650,7 @@ describe 'Ably::Realtime::Channel Message', :event_machine do
       let(:msgs_received)  { [] }
 
       it 'publishes the message again, later receives the ACK and only one message is ever received from Ably' do
-        on_reconnected = lambda do
+        on_reconnected = lambda do |*args|
           expect(message_state).to be_empty
           EventMachine.add_timer(2) do
             expect(message_state).to contain_exactly(:delivered)
