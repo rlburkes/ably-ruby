@@ -46,6 +46,7 @@ Gem::Specification.new do |spec|
   else
     spec.add_development_dependency 'webmock', '~> 2.2'
     spec.add_development_dependency 'coveralls', '~> 0.8.15'
+    spec.add_development_dependency 'rubocop', '~> 0.55.0'
     spec.add_development_dependency 'pry'
     spec.add_development_dependency 'pry-byebug'
   end
