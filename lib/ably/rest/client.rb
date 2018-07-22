@@ -83,9 +83,17 @@ module Ably
       # if empty or nil then fallback host functionality is disabled
       attr_reader :fallback_hosts
 
-      # Whethere the {Client} has to add a random identifier to the path of a request
+      # Whether the {Client} has to add a random identifier to the path of a request
       # @return [Boolean]
       attr_reader :add_request_ids
+
+      # True when idempotent publishing is enabled for all messages published via REST.
+      # When this feature is enabled, the client library will add a unique ID to every published message (without an ID)
+      # ensuring any failed published attempts (due to failures such as HTTP requests failing mid-flight) that are
+      # automatically retried will not result in duplicate messages being published to the Ably platform.
+      # Note: This is a beta unsupported feature!
+      # @return [Boolean]
+      attr_reader :idempotent_rest_publishing
 
       # Creates a {Ably::Rest::Client Rest Client} and configures the {Ably::Auth} object for the connection.
       #
@@ -118,6 +126,7 @@ module Ably
       # @option options [Boolean]                 :fallback_hosts_use_default  (false) When true, forces the user of fallback hosts even if a non-default production endpoint is being used
       # @option options [Array<String>]           :fallback_hosts              When an array of fallback hosts are provided, these fallback hosts are always used if a request fails to the primary endpoint. If an empty array is provided, the fallback host functionality is disabled
       # @option options [Boolean]                 :add_request_ids             (false) When true, adds a unique request_id to each request sent to Ably servers. This is handy when reporting issues, because you can refer to a specific request.
+      # @option options [Boolean]                 :idempotent_rest_publishing  (false) When true, idempotent publishing is enabled for all messages published via REST
       #
       # @return [Ably::Rest::Client]
       #
@@ -152,6 +161,7 @@ module Ably
         @custom_port      = options.delete(:port)
         @custom_tls_port  = options.delete(:tls_port)
         @add_request_ids  = options.delete(:add_request_ids)
+        @idempotent_rest_publishing = options.delete(:idempotent_rest_publishing)
 
         if options[:fallback_hosts_use_default] && options[:fallback_jhosts]
           raise ArgumentError, "fallback_hosts_use_default cannot be set to trye when fallback_jhosts is also provided"
