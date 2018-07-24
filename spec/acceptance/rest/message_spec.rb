@@ -121,6 +121,7 @@ describe Ably::Rest::Channel, 'messages' do
           it 'three REST publishes result in only one message being published' do
             3.times { channel.publish [message] }
             expect(channel.history.items.length).to eql(1)
+            expect(channel.history.items[0].id).to eql(id)
           end
         end
 
